@@ -1,0 +1,47 @@
+import java.util.Random;
+public class WeatherSimulation {
+	public static void main(String[] args) {
+		Random rand = new Random();
+		int day = 1;
+		String status = "Clear";
+		String event = "";
+		while (day <= 7) {
+			for (int i = 1; i <= 5; i++) {
+				int eventNum = rand.nextInt(3);
+				if (eventNum == 0) {
+					if (status.equals("Clear")) {
+						status = "Cloudy";
+						event = "Getting Warmer";
+					} else if (status.equals("Cloudy")) {
+						status = "Raining";
+						event = "Getting Colder";
+					} else if (status.equals("Raining")) {
+						status = "Severe Weather";
+						event = "Humidity is Increasing";
+					} else if (status.equals("Severe Weather")) {
+						status = "Clear";
+						event = "Wind is Increasing";
+					}
+				} else if (eventNum == 1) {
+					event = "No Change";
+				} else if (eventNum == 2) {
+					if (status.equals("Clear")) {
+						status = "Cloudy";
+						event = "Getting Warmer";
+					} else if (status.equals("Cloudy")) {
+						status = "Raining";
+						event = "Getting Colder";
+					} else if (status.equals("Raining")) {
+						status = "Severe Weather";
+						event = "Wind is Increasing";
+					} else if (status.equals("Severe Weather")) {
+						status = "Clear";
+						event = "Humidity is Increasing";
+					}
+				}
+				System.out.println("Day " + day + ": " + event);
+			}
+			day++;
+		}
+	}
+}
