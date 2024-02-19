@@ -1,24 +1,18 @@
-CREATE TABLE `restaurant`.`user` (
+CREATE TABLE `frontservices`.`user` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `firstName` VARCHAR(50) NULL DEFAULT NULL,
-  `middleName` VARCHAR(50) NULL DEFAULT NULL,
   `lastName` VARCHAR(50) NULL DEFAULT NULL,
   `mobile` VARCHAR(15) NULL,
   `email` VARCHAR(50) NULL,
   `passwordHash` VARCHAR(32) NOT NULL,
   `admin` TINYINT(1) NOT NULL DEFAULT 0,
-  `vendor` TINYINT(1) NOT NULL DEFAULT 0,
   `chef` TINYINT(1) NOT NULL DEFAULT 0,
-  `agent` TINYINT(1) NOT NULL DEFAULT 0,
   `registeredAt` DATETIME NOT NULL,
-  `lastLogin` DATETIME NULL DEFAULT NULL,
-  `intro` TINYTEXT NULL DEFAULT NULL,
-  `profile` TEXT NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `uq_mobile` (`mobile` ASC),
   UNIQUE INDEX `uq_email` (`email` ASC) );
 
-CREATE TABLE `restaurant`.`menu` (
+CREATE TABLE `frontservices`.`menu` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `userId` BIGINT NOT NULL,
   `title` VARCHAR(75) NOT NULL,
@@ -33,11 +27,11 @@ CREATE TABLE `restaurant`.`menu` (
   INDEX `idx_menu_user` (`userId` ASC),
   CONSTRAINT `fk_menu_user`
     FOREIGN KEY (`userId`)
-    REFERENCES `restaurant`.`user` (`id`)
+    REFERENCES `frontservices`.`user` (`id`)
     ON DELETE RESTRICT
     ON UPDATE NO ACTION);
 
-CREATE TABLE `restaurant`.`table_top` (
+CREATE TABLE `frontservices`.`table_top` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `code` VARCHAR(100) NOT NULL,
   `status` SMALLINT(6) NOT NULL DEFAULT 0,
@@ -47,22 +41,19 @@ CREATE TABLE `restaurant`.`table_top` (
   `content` TEXT NULL DEFAULT NULL,
   PRIMARY KEY (`id`));
 
-CREATE TABLE `restaurant`.`booking` (
+CREATE TABLE `frontservices`.`booking` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `tableId` BIGINT NOT NULL,
   `userId` BIGINT NULL DEFAULT NULL,
   `token` VARCHAR(100) NOT NULL,
   `status` SMALLINT(6) NOT NULL DEFAULT 0,
   `firstName` VARCHAR(50) NULL DEFAULT NULL,
-  `middleName` VARCHAR(50) NULL DEFAULT NULL,
   `lastName` VARCHAR(50) NULL DEFAULT NULL,
   `mobile` VARCHAR(15) NULL,
   `email` VARCHAR(50) NULL,
   `line1` VARCHAR(50) NULL DEFAULT NULL,
   `line2` VARCHAR(50) NULL DEFAULT NULL,
   `city` VARCHAR(50) NULL DEFAULT NULL,
-  `province` VARCHAR(50) NULL DEFAULT NULL,
-  `country` VARCHAR(50) NULL DEFAULT NULL,
   `createdAt` DATETIME NOT NULL,
   `updatedAt` DATETIME NULL DEFAULT NULL,
   `content` TEXT NULL DEFAULT NULL,
@@ -70,20 +61,20 @@ CREATE TABLE `restaurant`.`booking` (
   INDEX `idx_booking_table` (`tableId` ASC),
   CONSTRAINT `fk_booking_table`
     FOREIGN KEY (`tableId`)
-    REFERENCES `restaurant`.`table_top` (`id`)
+    REFERENCES `frontservices`.`table_top` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
-ALTER TABLE `restaurant`.`booking`
+ALTER TABLE `frontservices`.`booking`
 ADD INDEX `idx_booking_user` (`userId` ASC);
-ALTER TABLE `restaurant`.`booking` 
+ALTER TABLE `frontservices`.`booking` 
 ADD CONSTRAINT `fk_booking_user`
   FOREIGN KEY (`userId`)
-  REFERENCES `restaurant`.`user` (`id`)
+  REFERENCES `frontservices`.`user` (`id`)
   ON DELETE CASCADE
   ON UPDATE NO ACTION;
 
-CREATE TABLE `restaurant`.`booking_item` (
+CREATE TABLE `frontservices`.`booking_item` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `bookingId` BIGINT NOT NULL,
   `itemId` BIGINT NOT NULL,
@@ -116,7 +107,6 @@ ADD CONSTRAINT `fk_booking_item_item`
 CREATE TABLE `restaurant`.`order` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `userId` BIGINT NULL DEFAULT NULL,
-  `vendorId` BIGINT NULL DEFAULT NULL,
   `token` VARCHAR(100) NOT NULL,
   `status` SMALLINT(6) NOT NULL DEFAULT 0,
   `subTotal` FLOAT NOT NULL DEFAULT 0,
@@ -128,15 +118,10 @@ CREATE TABLE `restaurant`.`order` (
   `discount` FLOAT NOT NULL DEFAULT 0,
   `grandTotal` FLOAT NOT NULL DEFAULT 0,
   `firstName` VARCHAR(50) NULL DEFAULT NULL,
-  `middleName` VARCHAR(50) NULL DEFAULT NULL,
   `lastName` VARCHAR(50) NULL DEFAULT NULL,
   `mobile` VARCHAR(15) NULL,
   `email` VARCHAR(50) NULL,
-  `line1` VARCHAR(50) NULL DEFAULT NULL,
-  `line2` VARCHAR(50) NULL DEFAULT NULL,
   `city` VARCHAR(50) NULL DEFAULT NULL,
-  `province` VARCHAR(50) NULL DEFAULT NULL,
-  `country` VARCHAR(50) NULL DEFAULT NULL,
   `createdAt` DATETIME NOT NULL,
   `updatedAt` DATETIME NULL DEFAULT NULL,
   `content` TEXT NULL DEFAULT NULL,
@@ -144,15 +129,15 @@ CREATE TABLE `restaurant`.`order` (
   INDEX `idx_order_user` (`userId` ASC),
   CONSTRAINT `fk_order_user`
     FOREIGN KEY (`userId`)
-    REFERENCES `restaurant`.`user` (`id`)
+    REFERENCES `frontservices`.`user` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
-ALTER TABLE `restaurant`.`order` 
+ALTER TABLE `frontservices`.`order` 
 ADD INDEX `idx_order_vendor` (`vendorId` ASC);
 ALTER TABLE `restaurant`.`order` 
 ADD CONSTRAINT `fk_order_vendor`
   FOREIGN KEY (`vendorId`)
-  REFERENCES `restaurant`.`user` (`id`)
+  REFERENCES `frontservices`.`user` (`id`)
   ON DELETE RESTRICT
   ON UPDATE NO ACTION;
