@@ -11,26 +11,28 @@ import java.util.List;
 
 @Service
 public class AdminService {
+
     @Autowired
     private IAdminRepo adminRepo;
 
+    // Create a new Admin
     public Admin createAdmin(Admin admin) {
         admin.setCreatedAt(LocalDateTime.now());
         return adminRepo.save(admin);
     }
 
+    // Update an existing Admin
     public Admin updateAdmin(Integer adminId, Admin updatedAdmin) {
         Admin existingAdmin = adminRepo.findById(adminId)
                 .orElseThrow(() -> new EntityNotFoundException("Admin not found"));
 
-
         existingAdmin.setAdminName(updatedAdmin.getAdminName());
         existingAdmin.setAdminEmail(updatedAdmin.getAdminEmail());
-
 
         return adminRepo.save(existingAdmin);
     }
 
+    // Delete an Admin by ID
     public void deleteAdmin(Integer adminId) {
         Admin existingAdmin = adminRepo.findById(adminId)
                 .orElseThrow(() -> new EntityNotFoundException("Admin not found"));
@@ -38,11 +40,13 @@ public class AdminService {
         adminRepo.delete(existingAdmin);
     }
 
+    // Get an Admin by ID
     public Admin getAdminById(Integer adminId) {
         return adminRepo.findById(adminId)
                 .orElseThrow(() -> new EntityNotFoundException("Admin not found"));
     }
 
+    // Get all Admins
     public List<Admin> getAllAdmins() {
         return adminRepo.findAll();
     }
